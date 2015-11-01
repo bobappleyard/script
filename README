@@ -1,0 +1,19 @@
+# An attempt at a better transcript
+
+This is a new spin on the TranScript idea. The hope is to streamline some of the
+mechanisms, making them more general as well as more efficient.
+
+There isn't much to show for it at the moment. The plan of action is:
+
+1. Build a bytecode interpreter that knows nothing about the source syntax and
+   little about libraries.
+
+2. Write the builtins. Try to minimise these (Object, Class, Int, Float, String,
+   Array, Method, Primitive, Field).
+
+3. Build a compiler in transcript v1.
+
+4. Build a standard library in v2.
+
+5. Build a compiler in v2.
+
