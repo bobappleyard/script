@@ -157,7 +157,12 @@ func (s *shape) lookup(n *Name) int {
     return -1
 }
 
+// Return a shape that contains all the names of the current shape union all the
+// names contained in ns. This may be the current shape if all the names are 
+// already there. Values are cached in the current shape to save space and speed
+// up attribute lookups.
 func (s *shape) extend(ns []*Name) *shape {
+    // Find any names that were introduced with this shape.
     var missing []*Name
     for _, n := range ns {
         if s.lookup(n) == -1 {
@@ -176,13 +181,13 @@ retry:
     }
     // Create a new child
     child := new(shape).init(s.shapeset, missing, s.size + len(missing))
-    // Inform the names about the new shape
-    for i, n := range missing {
-        n.appendItem(nameItem{child.id, s.size + i})
-    }
     // A similar shape may have been added while we were working
     if !s.tryAppendChild(child) {
         goto retry
+    }
+    // The shape was registered, now inform the names
+    for i, n := range missing {
+        n.appendItem(nameItem{child.id, s.size + i})
     }
     return child
 }
